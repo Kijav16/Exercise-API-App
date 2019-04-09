@@ -2,40 +2,26 @@ package com.example.exercise_api_app;
 
 public class Exercise {
     private String name;
+    private String condition;
 
     //balance of users owed reps of this exercise
     private double balance;
+    private double mulitplier = 1.2;
 
-    private double killsMulitplier = 1.2;
-    private double deathsMultiplier = 1.5;
-    private double hoursPlayedMultiplier = 0.2;
 
-    public Exercise(String name) {
+    public Exercise(String name, String condition) {
         this.name = name;
     }
 
-    public void addKillRep() {
-        balance = balance + killsMulitplier;
+    public void addRep() {
+        balance = balance + mulitplier;
     }
 
-    public void addDeathRep() {
-        balance = balance + deathsMultiplier;
+    public void setMulitplier(double mulitplier) {
+        this.mulitplier = mulitplier;
     }
 
-    public void addHoursPlayedRep() {
-        balance = balance + hoursPlayedMultiplier;
+    public String getCondition() {
+        return condition;
     }
-    public void setKillsMulitplier(double killsMulitplier) {
-        this.killsMulitplier = killsMulitplier;
-    }
-
-    public void setDeathsMultiplier(double deathsMultiplier) {
-        this.deathsMultiplier = deathsMultiplier;
-    }
-
-    public void setHoursPlayedMultiplier(double hoursPlayedMultiplier) {
-        this.hoursPlayedMultiplier = hoursPlayedMultiplier;
-    }
-
-
 }

@@ -1,5 +1,7 @@
 package com.example.exercise_api_app;
 
+import java.util.ArrayList;
+
 public class trackedUserStats {
     private String username;
     private int hoursPlayed;
@@ -8,13 +10,39 @@ public class trackedUserStats {
     private  StatConnect apiConnect;
     private Persistence persistence;
 
+    ArrayList<Exercise> exerciseList;
 
     public trackedUserStats(String username) {
         this.username = username;
+        exerciseList = new ArrayList<Exercise>();
         apiConnect = new TestAPIConnect();
         persistence = new Persistence();
 
     }
+
+    //adds exercise with default multiplier parameters
+    public void addExercise(String name, String condition) {
+        addExercise(name, condition, 1.5);
+    }
+
+    public void addExercise(String name, String condition, double multiplier) {
+        Exercise exercise = new Exercise(name, condition);
+        exercise.setMulitplier(multiplier);
+
+        exerciseList.add(exercise);
+    }
+
+    public void ExerciseCount(String condition){
+        //combine mulitpliers and stats.
+        for (Exercise exercise : exerciseList) {
+            if (exercise.getCondition() == condition) {
+                exercise.addRep();
+            }
+        }
+    }
+
+
+
 
     public int getDeaths() {
         return apiConnect.getDeaths();
@@ -32,6 +60,8 @@ public class trackedUserStats {
         return apiConnect.getHoursPlayed();
     }
 
+
+
     public void setHoursPlayed(int hoursPlayed) {
         this.hoursPlayed = hoursPlayed;
     }
@@ -44,9 +74,6 @@ public class trackedUserStats {
         this.kills = kills;
     }
 
-    public void getExerciseCount(){
-        //combine mulitpliers and stats.
 
-    }
 
 }
