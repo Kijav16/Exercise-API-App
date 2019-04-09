@@ -5,18 +5,19 @@ public class trackedUserStats {
     private int hoursPlayed;
     private int deaths;
     private int kills;
+    private  StatConnect apiConnect;
+    private Persistence persistence;
+
 
     public trackedUserStats(String username) {
         this.username = username;
-    }
+        apiConnect = new TestAPIConnect();
+        persistence = new Persistence();
 
-    public trackedUserStats(String username, int hoursPlayed) {
-        this.username = username;
-        this.hoursPlayed = hoursPlayed;
     }
 
     public int getDeaths() {
-        return deaths;
+        return apiConnect.getDeaths();
     }
 
     public String getUsername() {
@@ -24,11 +25,11 @@ public class trackedUserStats {
     }
 
     public int getKills() {
-        return kills;
+        return apiConnect.getKills();
     }
 
     public int getHoursPlayed() {
-        return hoursPlayed;
+        return apiConnect.getHoursPlayed();
     }
 
     public void setHoursPlayed(int hoursPlayed) {
@@ -42,4 +43,10 @@ public class trackedUserStats {
     public void setKills(int kills) {
         this.kills = kills;
     }
+
+    public void getExerciseCount(){
+        //combine mulitpliers and stats.
+
+    }
+
 }
