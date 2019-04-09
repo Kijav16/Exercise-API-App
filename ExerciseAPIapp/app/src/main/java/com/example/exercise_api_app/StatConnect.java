@@ -1,5 +1,7 @@
 package com.example.exercise_api_app;
 
+import java.util.List;
+
 public interface StatConnect {
     int getHoursPlayed();
 
@@ -10,4 +12,6 @@ public interface StatConnect {
     int getKills();
 
     void setup(String username);
+
+    List<String> listPlayersStartsWith(String prefix);
 }
