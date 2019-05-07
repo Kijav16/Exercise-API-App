@@ -23,6 +23,8 @@ public class Stats {
     private int kills;
     @ColumnInfo(name = "kills_multiplier")
     private int killsMultiplier;
+    @ColumnInfo(name = "user_defined")
+    private String userDefined;
 
     public Stats() {
 
@@ -82,6 +84,14 @@ public class Stats {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+
+    public String getUserDefined() {
+        return userDefined;
+    }
+    public void setUserDefined(String userDefined) {
+        this.userDefined = userDefined;
     }
 }
 
