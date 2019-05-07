@@ -23,8 +23,9 @@ public interface DaoAccess {
     void setKills(int kills);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void setKillsMultiplier(int killsMultiplier);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void setUserDefined(String userDefined);
+    void setUserDefined(UserDefinedStats stat);
 
 
     @Query("SELECT death FROM Stats WHERE userName = :userName")
@@ -45,7 +46,7 @@ public interface DaoAccess {
     @Query("SELECT kills_multiplier FROM Stats WHERE userName = :userName")
     int getKillsMultiplier(String userName);
 
-    @Query("SELECT user_defined FROM Stats WHERE userName = :userName")
-    int getUserDefined(String userName);
+    @Query("SELECT data FROM userDefinedStats WHERE name = :statName")
+    int getUserDefined(String statName);
 
 }

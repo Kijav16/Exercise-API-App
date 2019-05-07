@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Stats.class}, version = 1, exportSchema = false)
+@Database(entities = {Stats.class, UserDefinedStats.class}, version = 1, exportSchema = false)
 public abstract class Persistance extends RoomDatabase implements Runnable {
 
     private static Persistance INSTANCE;
