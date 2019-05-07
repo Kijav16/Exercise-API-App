@@ -25,6 +25,8 @@ ExerciseAPIapp/\.idea/caches/gradle_models\.ser
 
 ExerciseAPIapp/\.idea/codeStyles/Project\.xml
 
+ExerciseAPIapp/\.idea/ExerciseAPIapp\.iml
+
 ExerciseAPIapp/\.idea/gradle\.xml
 
 ExerciseAPIapp/\.idea/libraries/Gradle__android_arch_core_common_1_1_1_jar\.xml
@@ -127,12 +129,6 @@ ExerciseAPIapp/\.idea/workspace\.xml
 
 ExerciseAPIapp/app/app\.iml
 
-ExerciseAPIapp/app/build/generated/source/buildConfig/debug/com/example/exercise_api_app/BuildConfig\.java
-
-ExerciseAPIapp/app/src/main/java/com/example/exercise_api_app/Tracker\.java
+ExerciseAPIapp/ExerciseAPIapp\.iml
 
 ExerciseAPIapp/local\.properties
-
-*.iml
-
-*.properties
