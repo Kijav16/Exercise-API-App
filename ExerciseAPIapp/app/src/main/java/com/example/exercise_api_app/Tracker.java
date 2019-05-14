@@ -2,7 +2,7 @@ package com.example.exercise_api_app;
 
 import android.content.Context;
 
-public class TrackedUserStats {
+public class Tracker {
     private String username;
     private int hoursPlayed;
     private int deaths;
@@ -13,33 +13,53 @@ public class TrackedUserStats {
     private  StatConnect apiConnect;
     private DaoAccess persistence;
 
-
-    public TrackedUserStats(String username, Context context) {
+    /**
+     * Constructor for Tracker.
+     * @param username
+     * @param context
+     */
+    public Tracker(String username, Context context) {
         this.username = username;
         apiConnect = new TestAPIConnect();
         persistence = (DaoAccess) Persistance.getPersistance(context);
     }
 
 
-    public void updateStats() {
-        deaths = getDeaths();
-        kills = getKills();
-        hoursPlayed = getHoursPlayed();
+    /**
+     *  Pulls playerdata from either API, or from local database if set to offline.
+      * @param offline
+     */
+    public void updateStats(boolean offline) {
+        if (!offline) {
+            deaths = getDeaths();
+            kills = getKills();
+            hoursPlayed = getHoursPlayed();
 
-        setHoursPlayed(hoursPlayed);
-        setDeaths(deaths);
-        setKills(kills);
+            setHoursPlayed(hoursPlayed);
+            setDeaths(deaths);
+            setKills(kills);
+        } else {
+            deaths = persistence.getDeath(username);
+            kills = persistence.getkills(username);
+            hoursPlayed = persistence.getHoursPlayed(username);
+        }
+
     }
 
-    public void calculateExerciseCount() {
-        updateStats();
+    /**
+     * Calculates the Number of exercises the user needs to take, based on the gathered playerdata.
+     * @param offline
+     */
+    public void calculateExerciseCount(Boolean offline) {
+        updateStats(offline);
+
         killsExercise = kills * persistence.getKillsMultiplier(username);
         deathsExercise = deaths * persistence.getDeathMultiplier(username);
         hoursplayedExercise =  hoursPlayed * persistence.getHoursPlayedMultiplier(username);
     }
 
 
-
+    //Gets data from API
     public int getDeaths() {
         return apiConnect.getDeaths();
     }
@@ -57,7 +77,7 @@ public class TrackedUserStats {
     }
 
 
-
+    //Sets Data in the Database
     public void setHoursPlayed(int hoursPlayed) {
         persistence.setHoursPlayed(hoursPlayed);
     }
