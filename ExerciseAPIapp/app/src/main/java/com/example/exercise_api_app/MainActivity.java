@@ -7,17 +7,19 @@ import android.widget.Toast;
 import java.util.concurrent.TimeUnit;
 
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Tracker tracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         activateBothering();
+        tracker = new Tracker("SADMAN", this);
+        tracker.calculateExerciseCount(false); //Should be able to check if device is online. set to online for now.
     }
 
     protected void activateBothering() {
