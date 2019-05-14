@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         activateBothering();
         tracker = new Tracker("SADMAN", this);
-        tracker.calculateExerciseCount();
+        tracker.calculateExerciseCount(false); //Should be able to check if device is online. set to online for now.
     }
 
     protected void activateBothering() {
