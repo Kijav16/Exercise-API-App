@@ -21,7 +21,7 @@ public class Tracker {
     public Tracker(String username, Context context) {
         this.username = username;
         apiConnect = new TestAPIConnect();
-        persistence = (DaoAccess) Persistance.getPersistance(context);
+        persistence = (DaoAccess) Persistance_Impl.getPersistance(context);
     }
 
 

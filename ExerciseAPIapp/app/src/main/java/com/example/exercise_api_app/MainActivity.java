@@ -28,6 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
         WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE ,br);
         Toast.makeText(this, "Bother activated!", Toast.LENGTH_LONG).show();
-        WorkManager.getInstance().cancelUniqueWork("EBother");
+        //WorkManager.getInstance().cancelUniqueWork("EBother");
     }
 }

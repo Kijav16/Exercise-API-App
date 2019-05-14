@@ -42,7 +42,6 @@ public class Botherer extends Worker {
         // notificationId is a unique int for each notification that you must define
         int notificationId = 42;
         notificationManager.notify(notificationId, builder.build());
-        Toast.makeText(context, "Bother", Toast.LENGTH_LONG).show();
     }
 
     @NonNull

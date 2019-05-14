@@ -7,18 +7,18 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 @Database(entities = {Stats.class, UserDefinedStats.class}, version = 1, exportSchema = false)
-public abstract class Persistance extends RoomDatabase implements Runnable {
+public abstract class Persistance_Impl extends RoomDatabase implements Runnable {
 
-    private static Persistance INSTANCE;
+    private static Persistance_Impl INSTANCE;
 
     public abstract DaoAccess daoAccess();
 
-    public static Persistance getPersistance(final Context context){
+    public static Persistance_Impl getPersistance(final Context context){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), Persistance.class, "stats-database").build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), Persistance_Impl.class, "stats-database").build();
                 }
             }
         }).start();
