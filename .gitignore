@@ -4671,3 +4671,11 @@ ExerciseAPIapp/\.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar\.
 ExerciseAPIapp/\.idea/libraries/Gradle__androidx_work_work_runtime_2_0_1_aar\.xml
 
 ExerciseAPIapp/\.idea/libraries/Gradle__com_google_guava_listenablefuture_1_0_jar\.xml
+
+ExerciseAPIapp/\.idea/encodings\.xml
+
+ExerciseAPIapp/app/build/generated/source/buildConfig/androidTest/debug/com/example/exercise_api_app/test/BuildConfig\.java
+
+ExerciseAPIapp/app/build/intermediates/merged_manifests/debugAndroidTest/AndroidManifest\.xml
+
+ExerciseAPIapp/app/build/intermediates/merged_manifests/debugAndroidTest/output\.json
