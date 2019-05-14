@@ -1,5 +1,7 @@
 package com.example.exercise_api_app;
 
+import java.util.List;
+
 public class TestAPIConnect implements StatConnect {
 
     @Override
@@ -25,5 +27,10 @@ public class TestAPIConnect implements StatConnect {
     @Override
     public void setup(String username) {
 
+    }
+
+    @Override
+    public List<String> listPlayersStartsWith(String prefix) {
+        return null;
     }
 }
