@@ -14,6 +14,10 @@ import java.net.URL;
 public class JSONConnect {
     private final String endpoint;
 
+    /**
+     * Constructor for the jsonConnect object.
+     * @param endpoint the endpoint to connect to. Ex. "http://census.daybreakgames.com"
+     */
     public JSONConnect(String endpoint) {
         this.endpoint = endpoint;
     }

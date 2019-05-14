@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE ,br);
         Toast.makeText(this, "Bother activated!", Toast.LENGTH_LONG).show();
+        // Disabled bothering.
         WorkManager.getInstance().cancelUniqueWork("EBother");
     }
 }
