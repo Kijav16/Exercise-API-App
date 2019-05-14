@@ -18,6 +18,14 @@ public class JSONConnect {
         this.endpoint = endpoint;
     }
 
+
+    /**
+     * Used for sending a web request and parsing the result as a JSONObject
+     * NOTE: Copied and modified from github/aalleexxx5/XouPs2.
+     * @param context the context path after the endpoint. Ex "/s:example/get/ps2/character".
+     * @param urlParameters the url encoded parameters to send. Ex "?name.first_lower=^ximias";
+     * @return the response parsed as a JSONObject.
+     */
     public JSONObject establishConnectionAndQuery(String context, String urlParameters) {
         JSONObject result = null;
         try {
@@ -26,7 +34,7 @@ public class JSONConnect {
             if (connection.getResponseCode() != 200) {
                 Log.e(this.getClass().getName(),"Unexpected response code: " + connection.getResponseCode());
                 if (connection.getResponseCode() - 200 >= 100) {
-                    throw new Error("server error response (" + connection.getResponseCode() + ") to request: ...get/ps2/" + urlParameters);
+                    throw new Error("server error response (" + connection.getResponseCode() + ") to request: ..."+ context + urlParameters);
                 }
             }
 
