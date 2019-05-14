@@ -23,7 +23,6 @@ public class Stats {
     private int kills;
     @ColumnInfo(name = "kills_multiplier")
     private int killsMultiplier;
-
     public Stats() {
 
     }
