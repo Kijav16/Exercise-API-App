@@ -1,6 +1,8 @@
 package com.example.exercise_api_app;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -9,7 +11,6 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -21,15 +22,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         activateBothering();
-        persistance = Persistance.getPersistance(this);
+        Context c = this;
+        Stats stats = new Stats(c);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                DaoAccess dao = persistance.daoAccess();
-                dao.setDeathMultiplier(2);
+
+                stats.setByString("Test", 2);
+                int test = stats.getByString("Test");
+                System.out.println(test);
+                runOnUiThread(()-> {
+                    Toast text = Toast.makeText(c, String.valueOf(test),Toast.LENGTH_LONG);
+                    text.show();
+                });
             }
-        },200);
+        },5_000);
     }
 
     protected void activateBothering() {
