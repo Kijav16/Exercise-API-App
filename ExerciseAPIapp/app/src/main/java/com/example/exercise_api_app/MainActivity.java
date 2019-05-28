@@ -16,7 +16,6 @@ import androidx.work.WorkManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    Persistance persistance;
     private Tracker tracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +37,12 @@ public class MainActivity extends AppCompatActivity {
                     Toast text = Toast.makeText(c, String.valueOf(test),Toast.LENGTH_LONG);
                     text.show();
                 });
-                tracker = new Tracker("SADMAN", c);
+                tracker = new Tracker("ximias", c);
                 tracker.calculateExerciseCount(false); //Should be able to check if device is online. set to online for now.
             }
         },10);
+
+
     }
 
     protected void activateBothering() {

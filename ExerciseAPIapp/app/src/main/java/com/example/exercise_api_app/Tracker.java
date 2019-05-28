@@ -20,7 +20,8 @@ public class Tracker {
      */
     public Tracker(String username, Context context) {
         this.username = username;
-        apiConnect = new TestAPIConnect();
+        apiConnect = new PS2Connect();
+        apiConnect.setup(username);
         stats = new Stats(context);
     }
 
@@ -31,6 +32,7 @@ public class Tracker {
      */
     public void updateStats(boolean offline) {
         if (!offline) {
+
             deaths = getDeaths();
             kills = getKills();
             hoursPlayed = getHoursPlayed();
@@ -56,6 +58,7 @@ public class Tracker {
         killsExercise = kills * stats.getKillsMultiplier();
         deathsExercise = deaths * stats.getDeathMultiplier();
         hoursplayedExercise =  hoursPlayed * stats.getHoursPlayedMultiplier();
+        System.out.println("deaths: " + deaths);
     }
 
 
