@@ -14,6 +14,13 @@ public class Tracker {
     private final Stats stats;
 
     /**
+     * TODO:
+     * - Make sure to store stats from when the tracker is first initiated.
+     * - Only calculate number of remaining exercises from difference of (First stats from when the tracker is first initialized versus current stats)
+     * - Also keep track of how many exercises are already performed
+     */
+
+    /**
      * Constructor for Tracker.
      * @param username
      * @param context
