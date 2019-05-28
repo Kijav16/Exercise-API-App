@@ -17,7 +17,6 @@ public class PS2Connect implements StatConnect{
 
     private static JSONConnect connection = new JSONConnect("http://census.daybreakgames.com");
     private HashMap<String, Integer> statMap = new HashMap<>(65);
-    private String usrename;
     private String userID;
     private long lastUpdate = 0;
 
@@ -116,7 +115,6 @@ public class PS2Connect implements StatConnect{
 
     @Override
     public void setup(String username) {
-        this.usrename = username;
         this.userID = findPlayerByName(username).optString("character_id");
     }
 }

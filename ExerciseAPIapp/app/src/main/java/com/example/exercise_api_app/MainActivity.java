@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                     text.show();
                 });
             }
-        },5_000);
+        },10);
     }
 
     protected void activateBothering() {
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         PeriodicWorkRequest br = new PeriodicWorkRequest.Builder(Botherer.class, 10, TimeUnit.HOURS).build();
 
         WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE ,br);
-        Toast.makeText(this, "Bother activated!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Bother activated!", Toast.LENGTH_LONG).show();
         // Disabled bothering.
         WorkManager.getInstance().cancelUniqueWork("EBother");
     }
