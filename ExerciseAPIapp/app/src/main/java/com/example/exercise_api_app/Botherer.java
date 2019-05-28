@@ -14,6 +14,9 @@ import androidx.work.WorkerParameters;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
+/**
+ * Class for sending push notifications (bothering) to the user.
+ */
 public class Botherer extends Worker {
     public static final String CHANNEL_ID = "bother";
     public int exercisesToBother = 5;
@@ -30,6 +33,9 @@ public class Botherer extends Worker {
         }
     }
 
+    /**
+     * Sends a push notification to the user.
+     */
     public void bother(Context context){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle("Remaining exercises: "+getRemainingExercises())

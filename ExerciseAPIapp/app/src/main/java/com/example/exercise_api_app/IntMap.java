@@ -5,8 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "userDefinedStats")
-public class UserDefinedStats {
+@Entity(tableName = "IntMap")
+public class IntMap {
     @NonNull
     @PrimaryKey
     private String name;
