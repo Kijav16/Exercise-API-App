@@ -23,10 +23,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         activateBothering();
-        tracker = new Tracker("SADMAN", this);
-        tracker.calculateExerciseCount(false); //Should be able to check if device is online. set to online for now.
         Context c = this;
         Stats stats = new Stats(c);
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -39,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast text = Toast.makeText(c, String.valueOf(test),Toast.LENGTH_LONG);
                     text.show();
                 });
+                tracker = new Tracker("SADMAN", c);
+                tracker.calculateExerciseCount(false); //Should be able to check if device is online. set to online for now.
             }
         },10);
     }

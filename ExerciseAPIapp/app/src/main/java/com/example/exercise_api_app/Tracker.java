@@ -11,7 +11,7 @@ public class Tracker {
     private double deathsExercise;
     private double hoursplayedExercise;
     private  StatConnect apiConnect;
-    private DaoAccess persistence;
+    private final Stats stats;
 
     /**
      * Constructor for Tracker.
@@ -21,7 +21,7 @@ public class Tracker {
     public Tracker(String username, Context context) {
         this.username = username;
         apiConnect = new TestAPIConnect();
-        persistence = (DaoAccess) Persistance_Impl.getPersistance(context);
+        stats = new Stats(context);
     }
 
 
@@ -39,9 +39,9 @@ public class Tracker {
             setDeaths(deaths);
             setKills(kills);
         } else {
-            deaths = persistence.getDeath(username);
-            kills = persistence.getkills(username);
-            hoursPlayed = persistence.getHoursPlayed(username);
+            deaths = stats.getDeath();
+            kills = stats.getKills();
+            hoursPlayed = stats.getHoursPlayed();
         }
 
     }
@@ -53,9 +53,9 @@ public class Tracker {
     public void calculateExerciseCount(Boolean offline) {
         updateStats(offline);
 
-        killsExercise = kills * persistence.getKillsMultiplier(username);
-        deathsExercise = deaths * persistence.getDeathMultiplier(username);
-        hoursplayedExercise =  hoursPlayed * persistence.getHoursPlayedMultiplier(username);
+        killsExercise = kills * stats.getKillsMultiplier();
+        deathsExercise = deaths * stats.getDeathMultiplier();
+        hoursplayedExercise =  hoursPlayed * stats.getHoursPlayedMultiplier();
     }
 
 
@@ -79,15 +79,15 @@ public class Tracker {
 
     //Sets Data in the Database
     public void setHoursPlayed(int hoursPlayed) {
-        persistence.setHoursPlayed(hoursPlayed);
+        stats.setHoursPlayed(hoursPlayed);
     }
 
     public void setDeaths(int deaths) {
-        persistence.setDeath(deaths);
+        stats.setDeath(deaths);
     }
 
     public void setKills(int kills) {
-        persistence.setKills(kills);
+        stats.setKills(kills);
     }
 
 
