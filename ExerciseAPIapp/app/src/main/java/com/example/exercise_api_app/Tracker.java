@@ -12,6 +12,9 @@ public class Tracker {
     private double hoursplayedExercise;
     private  StatConnect apiConnect;
     private final Stats stats;
+    private double killsMultiplier;
+    private double deathsMultiplier;
+    private double hoursPlayedMultiplier;
 
     /**
      * TODO:
@@ -39,33 +42,41 @@ public class Tracker {
      */
     public void updateStats(boolean offline) {
         if (!offline) {
-
+            //fetch  from API
             deaths = getDeaths();
             kills = getKills();
             hoursPlayed = getHoursPlayed();
 
+
+            //Store locally
             setHoursPlayed(hoursPlayed);
             setDeaths(deaths);
             setKills(kills);
         } else {
+            //Fetch locally
             deaths = stats.getDeath();
             kills = stats.getKills();
             hoursPlayed = stats.getHoursPlayed();
         }
+        //fetch Multipliers locally
+        deathsMultiplier = stats.getDeathMultiplier();
+        killsMultiplier = stats.getKillsMultiplier();
+        hoursPlayedMultiplier = stats.getHoursPlayedMultiplier();
 
     }
 
     /**
      * Calculates the Number of exercises the user needs to take, based on the gathered playerdata.
-     * @param offline
+     * @param isOffline
      */
-    public void calculateExerciseCount(Boolean offline) {
-        updateStats(offline);
+    public void calculateExerciseCount(Boolean isOffline) {
+        updateStats(isOffline);
 
-        killsExercise = kills * stats.getKillsMultiplier();
-        deathsExercise = deaths * stats.getDeathMultiplier();
-        hoursplayedExercise =  hoursPlayed * stats.getHoursPlayedMultiplier();
+        killsExercise = kills * killsMultiplier;
+        deathsExercise = deaths * deathsMultiplier;
+        hoursplayedExercise =  hoursPlayed * hoursPlayedMultiplier;
         System.out.println("deaths: " + deaths);
+
     }
 
 
@@ -87,6 +98,33 @@ public class Tracker {
     }
 
 
+    //Gets Data from the database
+    public int getLocalKills() {
+        return stats.getKills();
+    }
+
+    public int getLocalDeaths() {
+        return stats.getDeath();
+    }
+
+    public int getLocalHoursPlayed() {
+        return stats.getHoursPlayed();
+    }
+
+    public double getKillsExercise() {
+        return killsExercise;
+    }
+
+    public double getDeathsExercise() {
+        return deathsExercise;
+    }
+
+    public double getHoursplayedExercise() {
+        return hoursplayedExercise;
+    }
+
+
+
     //Sets Data in the Database
     public void setHoursPlayed(int hoursPlayed) {
         stats.setHoursPlayed(hoursPlayed);
@@ -99,6 +137,8 @@ public class Tracker {
     public void setKills(int kills) {
         stats.setKills(kills);
     }
+
+
 
 
 
