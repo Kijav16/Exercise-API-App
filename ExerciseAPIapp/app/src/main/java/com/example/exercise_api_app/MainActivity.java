@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.Timer;
@@ -17,10 +19,18 @@ import androidx.work.WorkManager;
 public class MainActivity extends AppCompatActivity {
 
     private Tracker tracker;
+    Button testButton; //TEST
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /**
+         * TEST
+         */
+        testButton = findViewById(R.id.TestBtn);
+        testButton.setOnClickListener(v -> addLocalKill());
+
         activateBothering();
         Context c = this;
         Stats stats = new Stats(c);
@@ -43,6 +53,25 @@ public class MainActivity extends AppCompatActivity {
         },10);
 
 
+    }
+
+    /**
+     * TEST
+     */
+    public void addLocalKill(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                tracker.setKills(tracker.getKills() + 1);
+                int currentKills = tracker.getLocalKills();
+                testButton.post(new Runnable() {
+                    public void run() {
+                        testButton.setText(currentKills + "");
+                    }
+                });
+
+            }
+        }).start();
     }
 
     protected void activateBothering() {
