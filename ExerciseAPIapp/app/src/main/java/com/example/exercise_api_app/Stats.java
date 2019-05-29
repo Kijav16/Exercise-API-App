@@ -14,14 +14,27 @@ public class Stats {
     }
 
     public int getByString(String name){
-        return Persistance.getPersistance(c.getApplicationContext()).daoAccess().getInt(name);
+        final int[] result = new int[1];
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                result[0] = Persistance.getPersistance(c.getApplicationContext()).daoAccess().getInt(name);
+            }
+        }).start();
+        return result[0];
     }
 
     public void setByString(String name, int data){
         IntMap stat = new IntMap();
         stat.setName(name);
         stat.setData(data);
-        Persistance.getPersistance(c.getApplicationContext()).daoAccess().setInt(stat);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Persistance.getPersistance(c.getApplicationContext()).daoAccess().setInt(stat);
+            }
+        }).start();
     }
 
     public int getDeath() {
