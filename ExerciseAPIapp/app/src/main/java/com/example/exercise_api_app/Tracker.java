@@ -80,14 +80,15 @@ public class Tracker {
     }
 
 
+    public String getUsername() {
+        return username;
+    }
+
     //Gets data from API
     public int getDeaths() {
         return apiConnect.getDeaths();
     }
 
-    public String getUsername() {
-        return username;
-    }
 
     public int getKills() {
         return apiConnect.getKills();
