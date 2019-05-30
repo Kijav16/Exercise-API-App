@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -62,9 +61,8 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                tracker.setKills(tracker.getLocalKills() + 1);
-                tracker.calculateExerciseCount();
-                double currentKillsExercises = tracker.getKillsExercise();
+                tracker.doExercise("kills", 1);
+                double currentKillsExercises = tracker.getKillsExerciseRemaining();
                 testButton.post(new Runnable() {
                     public void run() {
                         testButton.setText(currentKillsExercises + "");
