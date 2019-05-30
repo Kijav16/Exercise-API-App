@@ -7,9 +7,9 @@ public class Tracker {
     private int hoursPlayed;
     private int deaths;
     private int kills;
-    private double killsExercise;
-    private double deathsExercise;
-    private double hoursPlayedExercise;
+    private double killsExerciseRemaining;
+    private double deathsExerciseRemaining;
+    private double hoursPlayedExerciseRemaining;
 
     private double killsMultiplier;
     private double deathsMultiplier;
@@ -65,18 +65,42 @@ public class Tracker {
     }
 
     /**
-     * Calculates the Number of exercises the user needs to take, based on the gathered playerdata.
+     * Calculates the Number of exercises the user needs to take, based on the gathered playerdata,
+     * compared to the local playerdata.
+     *
+     * Remaining = (Data from API - (Initial dataset + exercises completed)) * Exercise multiplier
      */
     public void calculateExerciseCount() {
         updateStats();
 
-        killsExercise = (kills - iniKills) * killsMultiplier;
-        deathsExercise = (deaths - iniDeaths)* deathsMultiplier;
-        hoursPlayedExercise =  (hoursPlayed - iniHoursPlayed)* hoursPlayedMultiplier;
-        System.out.println("deaths: " + deaths);
+        killsExerciseRemaining = (kills - iniKills) * killsMultiplier;
+        deathsExerciseRemaining = (deaths - iniDeaths)* deathsMultiplier;
+        hoursPlayedExerciseRemaining =  (hoursPlayed - iniHoursPlayed)* hoursPlayedMultiplier;
+        System.out.println("kills: " + kills);
 
     }
 
+    /**
+     * Records amount of exercises the user have done, by increasing the local Stats.
+     * This means that the difference between local stats and global stats is decreased, and therefore
+     * fewer Exercises left for the user.
+     * @param exercise
+     * @param amount
+     */
+    public void doExercise(String exercise, int amount) {
+        exercise = exercise.toLowerCase();
+        if (exercise == "deaths" || exercise == "death") {
+            setDeaths(getLocalDeaths() + amount);
+        }
+        if (exercise == "kills" || exercise == "kill") {
+            setKills(getLocalKills() + amount);
+        }
+        if (exercise == "hoursplayed" || exercise == "hours played") {
+            setHoursPlayed(getLocalHoursPlayed() + amount);
+        }
+
+        calculateExerciseCount();
+    }
 
     public String getUsername() {
         return username;
@@ -109,16 +133,16 @@ public class Tracker {
         return stats.getHoursPlayed();
     }
 
-    public double getKillsExercise() {
-        return killsExercise;
+    public double getKillsExerciseRemaining() {
+        return killsExerciseRemaining;
     }
 
-    public double getDeathsExercise() {
-        return deathsExercise;
+    public double getDeathsExerciseRemaining() {
+        return deathsExerciseRemaining;
     }
 
-    public double getHoursPlayedExercise() {
-        return hoursPlayedExercise;
+    public double getHoursPlayedExerciseRemaining() {
+        return hoursPlayedExerciseRemaining;
     }
 
 
