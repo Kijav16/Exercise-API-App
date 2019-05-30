@@ -23,9 +23,10 @@ public class Tracker {
 
     /**
      * TODO:
-     * - Make sure to store stats from when the tracker is first initiated.
+     * DONE - Make sure to store stats from when the tracker is first initiated.
      * DONE - Only calculate number of remaining exercises from difference of (First stats from when the tracker is first initialized versus current stats)
-     * - Also keep track of how many exercises are already performed
+     * SEMIDONE(Tracks remaining exercises instead)- Also keep track of how many exercises are already performed
+     * 
      */
 
     /**
