@@ -9,17 +9,22 @@ public class Tracker {
     private int kills;
     private double killsExercise;
     private double deathsExercise;
-    private double hoursplayedExercise;
-    private  StatConnect apiConnect;
-    private final Stats stats;
+    private double hoursPlayedExercise;
+
     private double killsMultiplier;
     private double deathsMultiplier;
     private double hoursPlayedMultiplier;
+    private int iniDeaths;
+    private int iniKills;
+    private int iniHoursPlayed;
+
+    private  StatConnect apiConnect;
+    private final TestStats stats;
 
     /**
      * TODO:
      * - Make sure to store stats from when the tracker is first initiated.
-     * - Only calculate number of remaining exercises from difference of (First stats from when the tracker is first initialized versus current stats)
+     * DONE - Only calculate number of remaining exercises from difference of (First stats from when the tracker is first initialized versus current stats)
      * - Also keep track of how many exercises are already performed
      */
 
@@ -30,34 +35,28 @@ public class Tracker {
      */
     public Tracker(String username, Context context) {
         this.username = username;
-        apiConnect = new PS2Connect();
+        //apiConnect = new PS2Connect();
+        apiConnect = new TestAPIConnect();
         apiConnect.setup(username);
-        stats = new Stats(context);
+        //stats = new Stats(context);
+        stats = new TestStats(context);
     }
 
 
     /**
      *  Pulls playerdata from either API, or from local database if set to offline.
-      * @param offline
      */
-    public void updateStats(boolean offline) {
-        if (!offline) {
-            //fetch  from API
-            deaths = getDeaths();
-            kills = getKills();
-            hoursPlayed = getHoursPlayed();
+    public void updateStats() {
+        //fetch from API
+        deaths = getDeaths();
+        kills = getKills();
+        hoursPlayed = getHoursPlayed();
 
+        //Fetch initial data
+        iniDeaths = stats.getDeath();
+        iniKills = stats.getKills();
+        iniHoursPlayed = stats.getHoursPlayed();
 
-            //Store locally
-            setHoursPlayed(hoursPlayed);
-            setDeaths(deaths);
-            setKills(kills);
-        } else {
-            //Fetch locally
-            deaths = stats.getDeath();
-            kills = stats.getKills();
-            hoursPlayed = stats.getHoursPlayed();
-        }
         //fetch Multipliers locally
         deathsMultiplier = stats.getDeathMultiplier();
         killsMultiplier = stats.getKillsMultiplier();
@@ -67,14 +66,13 @@ public class Tracker {
 
     /**
      * Calculates the Number of exercises the user needs to take, based on the gathered playerdata.
-     * @param isOffline
      */
-    public void calculateExerciseCount(Boolean isOffline) {
-        updateStats(isOffline);
+    public void calculateExerciseCount() {
+        updateStats();
 
-        killsExercise = kills * killsMultiplier;
-        deathsExercise = deaths * deathsMultiplier;
-        hoursplayedExercise =  hoursPlayed * hoursPlayedMultiplier;
+        killsExercise = (kills - iniKills) * killsMultiplier;
+        deathsExercise = (deaths - iniDeaths)* deathsMultiplier;
+        hoursPlayedExercise =  (hoursPlayed - iniHoursPlayed)* hoursPlayedMultiplier;
         System.out.println("deaths: " + deaths);
 
     }
@@ -88,7 +86,6 @@ public class Tracker {
     public int getDeaths() {
         return apiConnect.getDeaths();
     }
-
 
     public int getKills() {
         return apiConnect.getKills();
@@ -120,8 +117,8 @@ public class Tracker {
         return deathsExercise;
     }
 
-    public double getHoursplayedExercise() {
-        return hoursplayedExercise;
+    public double getHoursPlayedExercise() {
+        return hoursPlayedExercise;
     }
 
 
