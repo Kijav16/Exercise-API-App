@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     text.show();
                 });
                 tracker = new Tracker("ximias", c);
-                tracker.calculateExerciseCount(false); //Should be able to check if device is online. set to online for now.
+                tracker.calculateExerciseCount(); //Should be able to check if device is online. set to online for now.
             }
         },10);
 
@@ -62,11 +62,12 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                tracker.setKills(tracker.getKills() + 1);
-                int currentKills = tracker.getLocalKills();
+                tracker.setKills(tracker.getLocalKills() + 1);
+                tracker.calculateExerciseCount();
+                double currentKillsExercises = tracker.getKillsExercise();
                 testButton.post(new Runnable() {
                     public void run() {
-                        testButton.setText(currentKills + "");
+                        testButton.setText(currentKillsExercises + "");
                     }
                 });
 
