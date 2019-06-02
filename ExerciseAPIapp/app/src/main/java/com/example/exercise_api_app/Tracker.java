@@ -3,20 +3,6 @@ package com.example.exercise_api_app;
 import android.content.Context;
 
 public class Tracker {
-    private String username;
-    private int hoursPlayed;
-    private int deaths;
-    private int kills;
-    private double killsExerciseRemaining;
-    private double deathsExerciseRemaining;
-    private double hoursPlayedExerciseRemaining;
-
-    private double killsMultiplier;
-    private double deathsMultiplier;
-    private double hoursPlayedMultiplier;
-    private int iniDeaths;
-    private int iniKills;
-    private int iniHoursPlayed;
 
     private StatConnect apiConnect;
     private final Stats stats;
@@ -36,134 +22,106 @@ public class Tracker {
      * @param context
      */
     public Tracker(String username, Context context) {
-        this.username = username;
         apiConnect = new PS2Connect();
         //apiConnect = new TestAPIConnect();
         apiConnect.setup(username);
         stats = new Stats(context);
-        stats.setUserName(username);
+        if (stats.getUserName()== null || !stats.getUserName().equals(username)){
+            stats.setUserName(username);
+            reloadInitialStats();
+        }
         //stats = new TestStats(context);
     }
 
-
-    /**
-     * Pulls playerdata from either API, or from local database if set to offline.
-     */
-    public void updateStats() {
-        //fetch from API
-        deaths = getDeaths();
-        kills = getKills();
-        hoursPlayed = getHoursPlayed();
-
-        //Fetch initial data
-        iniDeaths = stats.getDeath();
-        iniKills = stats.getKills();
-        iniHoursPlayed = stats.getHoursPlayed();
-
-        //fetch Multipliers locally
-        deathsMultiplier = stats.getDeathMultiplier();
-        killsMultiplier = stats.getKillsMultiplier();
-        hoursPlayedMultiplier = stats.getHoursPlayedMultiplier();
-
-    }
-
-    /**
-     * Calculates the Number of exercises the user needs to take, based on the gathered playerdata,
-     * compared to the local playerdata.
-     * <p>
-     * Remaining = (Data from API - (Initial dataset + exercises completed)) * Exercise multiplier
-     */
-    public void calculateExerciseCount() {
-        updateStats();
-
-        killsExerciseRemaining = (kills - iniKills) * killsMultiplier;
-        deathsExerciseRemaining = (deaths - iniDeaths) * deathsMultiplier;
-        hoursPlayedExerciseRemaining = (hoursPlayed - iniHoursPlayed) * hoursPlayedMultiplier;
-        System.out.println("kills: " + kills);
-
-    }
-
-    /**
-     * Records amount of exercises the user have done, by increasing the local Stats.
-     * This means that the difference between local stats and global stats is decreased, and therefore
-     * fewer Exercises left for the user.
-     *
-     * @param exercise
-     * @param amount
-     */
-    public void doExercise(String exercise, int amount) {
-        exercise = exercise.toLowerCase();
-        if (exercise == "deaths" || exercise == "death") {
-            setDeaths(getLocalDeaths() + amount);
-        }
-        if (exercise == "kills" || exercise == "kill") {
-            setKills(getLocalKills() + amount);
-        }
-        if (exercise == "hoursplayed" || exercise == "hours played") {
-            setHoursPlayed(getLocalHoursPlayed() + amount);
-        }
-
-        calculateExerciseCount();
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    //Gets data from API
-    public int getDeaths() {
-        return apiConnect.getDeaths();
-    }
-
-    public int getKills() {
-        return apiConnect.getKills();
-    }
-
-    public int getHoursPlayed() {
-        return apiConnect.getHoursPlayed();
-    }
-
-
-    //Gets Data from the database
-    public int getLocalKills() {
-        return stats.getKills();
-    }
-
-    public int getLocalDeaths() {
-        return stats.getDeath();
-    }
-
-    public int getLocalHoursPlayed() {
-        return stats.getHoursPlayed();
+    private void reloadInitialStats() {
+        setInitialDeaths(getDeaths());
+        setInitialKills(getKills());
+        setInitialHoursPlayed(getHoursPlayed());
     }
 
     public double getKillsExerciseRemaining() {
-        return killsExerciseRemaining;
+        return (int)((getKills() - getInitialKills()) * getKillsMultiplier());
     }
 
     public double getDeathsExerciseRemaining() {
-        return deathsExerciseRemaining;
+        return (getDeaths() - getInitialDeaths()) * getDeathMultiplier();
     }
 
     public double getHoursPlayedExerciseRemaining() {
-        return hoursPlayedExerciseRemaining;
+        return (getHoursPlayed() - getInitialHoursPlayed()) * getHoursPlayedMultiplier();
     }
 
-
-    //Sets Data in the Database
-    public void setHoursPlayed(int hoursPlayed) {
-        stats.setHoursPlayed(hoursPlayed);
+    public void doDeathExercise(int amount){
+        setInitialDeaths(amount*getDeathMultiplier());
+    }
+    public void doKillsExercise(int amount){
+        setInitialKills(amount*getKillsMultiplier());
     }
 
-    public void setDeaths(int deaths) {
-        stats.setDeath(deaths);
+    public void doHoursPlayedExercise(int amount){
+        setInitialHoursPlayed(amount*getHoursPlayedMultiplier());
     }
 
-    public void setKills(int kills) {
-        stats.setKills(kills);
+    public void setKillsMultiplier(int multiplier){
+        stats.setKillsMultiplier(multiplier);
+    }
+
+    public void setDeathsMultiplier(int multiplier) {
+        stats.setDeathMultiplier(multiplier);
+    }
+
+    public void setHoursPlayedMultiplier(int multiplier) {
+        stats.setHoursPlayedMultiplier(multiplier);
     }
 
     public void logout() {
         stats.setUserName("");
+    }
+
+    private int getDeaths() {
+        return apiConnect.getDeaths();
+    }
+
+    private int getKills() {
+        return apiConnect.getKills();
+    }
+
+    private int getHoursPlayed() {
+        return apiConnect.getHoursPlayed();
+    }
+
+    private int getKillsMultiplier(){
+        return stats.getKillsMultiplier();
+    }
+
+    private int getDeathMultiplier(){
+        return stats.getDeathMultiplier();
+    }
+
+    private int getHoursPlayedMultiplier(){
+        return stats.getHoursPlayedMultiplier();
+    }
+
+    private int getInitialDeaths(){
+        return stats.getByString("iniDeaths");
+    }
+
+    private void setInitialDeaths(int amount){
+        stats.setByString("iniDeaths", amount);
+    }
+    private int getInitialKills(){
+        return stats.getByString("iniKills");
+    }
+
+    private void setInitialKills(int amount){
+        stats.setByString("iniKills", amount);
+    }
+
+    private int getInitialHoursPlayed(){
+        return stats.getByString("iniHoursPlayed");
+    }
+
+    private void setInitialHoursPlayed(int amount){
+        stats.setByString("iniHoursPlayed", amount);
     }
 }
