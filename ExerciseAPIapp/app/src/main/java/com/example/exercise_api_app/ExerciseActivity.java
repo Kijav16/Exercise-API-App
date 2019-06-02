@@ -64,7 +64,6 @@ public class ExerciseActivity extends AppCompatActivity {
         trackerTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                tracker.calculateExerciseCount();
                 updateButtonText();
             }
         },2000,2000);
