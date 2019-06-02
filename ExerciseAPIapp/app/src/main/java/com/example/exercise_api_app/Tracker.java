@@ -6,14 +6,9 @@ public class Tracker {
 
     private StatConnect apiConnect;
     private final Stats stats;
-
-    /**
-     * TODO:
-     * DONE - Make sure to store stats from when the tracker is first initiated.
-     * DONE - Only calculate number of remaining exercises from difference of (First stats from when the tracker is first initialized versus current stats)
-     * SEMIDONE(Tracks remaining exercises instead)- Also keep track of how many exercises are already performed
-     *
-     */
+    private double deathFraction =0;
+    private double killFraction =0;
+    private double timeFraction =0;
 
     /**
      * Constructor for Tracker.
@@ -48,7 +43,7 @@ public class Tracker {
             setInitialKills(getKills());
             return 0;
         }
-        return (getKills() - getInitialKills()) * getKillsMultiplier();
+        return (getKills() - getInitialKills()) * getKillsMultiplier()/100.0;
     }
 
     /**
@@ -59,7 +54,7 @@ public class Tracker {
             setInitialDeaths(getDeaths());
             return 0;
         }
-        return (getDeaths() - getInitialDeaths()) * getDeathMultiplier();
+        return (getDeaths() - getInitialDeaths()) * getDeathMultiplier()/100.0;
     }
 
     /**
@@ -70,28 +65,35 @@ public class Tracker {
             setInitialHoursPlayed(getHoursPlayed());
             return 0;
         }
-        return (getHoursPlayed() - getInitialHoursPlayed()) * getHoursPlayedMultiplier();
+        return (getHoursPlayed() - getInitialHoursPlayed()) * getHoursPlayedMultiplier()/100.0;
     }
 
     /**
      * Reduces the amount of exercises to be done by the amount specified.
      */
     public void doDeathExercise(int amount){
-        setInitialDeaths(getInitialDeaths()+amount*getDeathMultiplier());
+        deathFraction += amount*getDeathMultiplier();
+
+        setInitialDeaths(getInitialDeaths()+(int)deathFraction);
+        deathFraction = deathFraction % 1.0;
     }
 
     /**
      * Reduces the amount of exercises to be done by the amount specified.
      */
     public void doKillsExercise(int amount){
-        setInitialKills(getInitialKills()+amount*getKillsMultiplier());
+        killFraction += amount*getKillsMultiplier();
+        setInitialKills(getInitialKills()+(int)killFraction);
+        killFraction = killFraction % 1.0;
     }
 
     /**
      * Reduces the amount of exercises to be done by the amount specified.
      */
     public void doHoursPlayedExercise(int amount){
-        setInitialHoursPlayed(getHoursPlayed()+amount*getHoursPlayedMultiplier());
+        timeFraction += amount*getHoursPlayedMultiplier();
+        setInitialHoursPlayed(getHoursPlayed()+(int)timeFraction);
+        timeFraction = timeFraction % 1.0;
     }
 
     /**
