@@ -7,11 +7,36 @@
 
     <EditText
         android:id="@+id/Edittextt"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="208dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="51dp"
+        android:hint="Change multiplier"
+        android:inputType="number"
+        android:textColorHint="#AD2B2929" />
+
+    <EditText
+        android:id="@+id/Edittextt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Edittextt3"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="40dp"
+        android:hint="Change multiplier"
+        android:inputType="number"
+        android:textColorHint="#AD2B2929" />
+
+    <EditText
+        android:id="@+id/Edittextt3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Edittextt"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="40dp"
         android:hint="Change multiplier"
         android:inputType="number"
         android:textColorHint="#AD2B2929" />
@@ -20,12 +45,37 @@
         android:id="@+id/Confirmbutt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/Edittextt"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="142dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="40dp"
+        android:layout_toEndOf="@+id/Edittextt"
         android:text="Confirm Changes" />
+
+    <Button
+        android:id="@+id/Confirmbutt2"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Confirmbutt"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_toEndOf="@+id/Edittextt3"
+        android:text="Confirm Changes" />
+
+    <Button
+        android:id="@+id/Comfirmbutt3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Confirmbutt2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_toEndOf="@+id/Edittextt2"
+        android:text="Confirm Changes" />
+
 
 </RelativeLayout>

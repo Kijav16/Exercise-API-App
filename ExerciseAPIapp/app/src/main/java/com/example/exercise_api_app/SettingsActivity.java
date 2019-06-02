@@ -1,7 +1,6 @@
 package com.example.exercise_api_app;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -12,10 +11,14 @@ import androidx.annotation.Nullable;
 
 public class SettingsActivity extends Activity {
 
-    private EditText multiField;
-    private Button comfirmButt;
+    private EditText pushField;
+    private EditText sitField;
+    private EditText squadField;
+    private Button comfirmpush;
+    private Button comfirmsit;
+    private Button comfirmsquad;
     private Stats stats;
-    private String username;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,8 +28,12 @@ public class SettingsActivity extends Activity {
 
         setContentView(R.layout.settings);
 
-        multiField = (EditText) findViewById(R.id.Edittextt);
-        comfirmButt = (Button) findViewById(R.id.Confirmbutt);
+        pushField = (EditText) findViewById(R.id.Edittextt);
+        sitField = (EditText) findViewById(R.id.Edittextt2);
+        squadField = (EditText) findViewById(R.id.Edittextt3);
+        comfirmpush = (Button) findViewById(R.id.Confirmbutt);
+        comfirmsit = (Button) findViewById(R.id.Confirmbutt2);
+        comfirmsquad = (Button) findViewById(R.id.Comfirmbutt3);
 
 
 
@@ -39,11 +46,30 @@ public class SettingsActivity extends Activity {
         getWindow().setLayout((int)(width*0.8),(int)(height*0.5));
 
 
-        comfirmButt.setOnClickListener(new View.OnClickListener() {
+        comfirmpush.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(()->{
-                    stats.setDeathMultiplier(Integer.valueOf(multiField.getText().toString()));
+                    stats.setDeathMultiplier(Integer.valueOf(pushField.getText().toString()));
+                }).start();
+
+            }
+        });
+        comfirmsit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(()->{
+                    stats.setKillsMultiplier(Integer.valueOf(pushField.getText().toString()));
+                }).start();
+
+            }
+        });
+
+        comfirmsquad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(()->{
+                    stats.setHoursPlayedMultiplier(Integer.valueOf(pushField.getText().toString()));
                 }).start();
 
             }
