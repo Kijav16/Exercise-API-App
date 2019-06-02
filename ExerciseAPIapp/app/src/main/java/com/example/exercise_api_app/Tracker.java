@@ -19,14 +19,14 @@ public class Tracker {
     private int iniHoursPlayed;
 
     private  StatConnect apiConnect;
-    private final TestStats stats;
+    private final Stats stats;
 
     /**
      * TODO:
      * DONE - Make sure to store stats from when the tracker is first initiated.
      * DONE - Only calculate number of remaining exercises from difference of (First stats from when the tracker is first initialized versus current stats)
      * SEMIDONE(Tracks remaining exercises instead)- Also keep track of how many exercises are already performed
-     * 
+     *  - Make restriction on how many exercises can be done. ceiling is set to the global stat, and can't go higher.
      */
 
     /**
@@ -36,11 +36,11 @@ public class Tracker {
      */
     public Tracker(String username, Context context) {
         this.username = username;
-        //apiConnect = new PS2Connect();
-        apiConnect = new TestAPIConnect();
+        apiConnect = new PS2Connect();
+        //apiConnect = new TestAPIConnect();
         apiConnect.setup(username);
-        //stats = new Stats(context);
-        stats = new TestStats(context);
+        stats = new Stats(context);
+        //stats = new TestStats(context);
     }
 
 
