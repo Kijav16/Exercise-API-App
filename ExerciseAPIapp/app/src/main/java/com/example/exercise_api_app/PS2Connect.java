@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PS2Connect implements StatConnect{
+public class PS2Connect implements StatConnect {
 
     private static final String CONTEXT_ROOT = "/s:XouPs2/get/ps2/";
 
@@ -30,16 +30,16 @@ public class PS2Connect implements StatConnect{
      */
     public JSONObject findPlayerByName(String namePrefix) {
         try {
-            JSONObject players = connection.establishConnectionAndQuery(CONTEXT_ROOT +"character_name/","?name.first_lower=^" + namePrefix.toLowerCase() + "&c:limit=10");
-            return connection.establishConnectionAndQuery(CONTEXT_ROOT +"character","/?character_id=" + players.getJSONArray("character_name_list").getJSONObject(0).getString("character_id")).getJSONArray("character_list").getJSONObject(0);
+            JSONObject players = connection.establishConnectionAndQuery(CONTEXT_ROOT + "character_name/", "?name.first_lower=^" + namePrefix.toLowerCase() + "&c:limit=10");
+            return connection.establishConnectionAndQuery(CONTEXT_ROOT + "character", "/?character_id=" + players.getJSONArray("character_name_list").getJSONObject(0).getString("character_id")).getJSONArray("character_list").getJSONObject(0);
         } catch (JSONException e) {
-            Log.e(this.getClass().getName()+" FindPlayerByName", "Missing jsonArray from response.");
+            Log.e(this.getClass().getName() + " FindPlayerByName", "Missing jsonArray from response.");
             throw new Error("Bad json");
         }
     }
 
     public JSONObject getCharacterStatsById() throws JSONException {
-        return connection.establishConnectionAndQuery(CONTEXT_ROOT +"character/","?character_id="+userID+"&c:resolve=stat_history").getJSONArray("character_list").getJSONObject(0);
+        return connection.establishConnectionAndQuery(CONTEXT_ROOT + "character/", "?character_id=" + userID + "&c:resolve=stat_history").getJSONArray("character_list").getJSONObject(0);
     }
 
     /**
@@ -49,7 +49,7 @@ public class PS2Connect implements StatConnect{
      * @return up to 10 player names and ids with the prefix in their lower name
      */
     public List<String> listPlayersStartsWith(String prefix) {
-        JSONObject players = connection.establishConnectionAndQuery(CONTEXT_ROOT +"character_name/","?name.first_lower=^" + prefix.toLowerCase() + "&c:limit=10");
+        JSONObject players = connection.establishConnectionAndQuery(CONTEXT_ROOT + "character_name/", "?name.first_lower=^" + prefix.toLowerCase() + "&c:limit=10");
         if (players.has("character_name_list")) {
             try {
 
@@ -69,7 +69,7 @@ public class PS2Connect implements StatConnect{
     }
 
     private void updateStatsMap() {
-        if (lastUpdate +1000 > System.currentTimeMillis()) return;
+        if (lastUpdate + 1000 > System.currentTimeMillis()) return;
         lastUpdate = System.currentTimeMillis();
         HashMap<String, Integer> result = new HashMap<>();
         try {
@@ -78,16 +78,16 @@ public class PS2Connect implements StatConnect{
             JSONArray statArray = character.getJSONObject("stats").getJSONArray("stat_history");
             for (int i = 0; i < statArray.length(); i++) {
                 JSONObject stat = statArray.getJSONObject(i);
-                if (result.containsKey(stat.getString("stat_name"))){
-                    // Might need to be Integer.parseInt(stat.getString("value_forever"));
-                    result.put(stat.getString("stat_name"), result.get(stat.getString("stat_name") + stat.getInt("value_forever")));
-                }else{
-                    result.put(stat.getString("stat_name"),stat.optInt("value_forever"));
-                }
+                result.put(stat.getString("stat_name"), stat.getInt("all_time"));
             }
-            statMap = result;
+            result.forEach((key, value) -> {
+                if (!statMap.containsKey(key) || !statMap.get(key).equals(value)) {
+                    Log.i(getClass().getName()+" UpdateStatsMap", "Updated: " + key + " value: " + value);
+                    statMap.put(key, value);
+                }
+            });
         } catch (JSONException e) {
-            Log.e(getClass().getName() + " UpdateStatMap: ","Malformed Json");
+            Log.e(getClass().getName() + " UpdateStatMap: ", "Malformed Json");
             e.printStackTrace();
         }
     }
@@ -95,7 +95,7 @@ public class PS2Connect implements StatConnect{
     @Override
     public int getHoursPlayed() {
         updateStatsMap();
-        return statMap.get("time")/3600;
+        return statMap.get("time") / 3600;
     } //divided by minutes and hours
 
     @Override

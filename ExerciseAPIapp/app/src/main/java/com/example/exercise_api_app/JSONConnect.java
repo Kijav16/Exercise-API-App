@@ -51,7 +51,7 @@ public class JSONConnect {
 
             result = null;
             try {
-                System.out.println(response.toString());
+                Log.i(getClass().getName()+" establishConnectionAndQuery", response.toString());
                 result = new JSONObject(response.toString());
             } catch (JSONException e) {
                 throw new Error("Json exception from response: "+response.toString());

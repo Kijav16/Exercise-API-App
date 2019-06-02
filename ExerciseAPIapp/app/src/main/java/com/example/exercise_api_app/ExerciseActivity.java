@@ -55,7 +55,7 @@ public class ExerciseActivity extends AppCompatActivity {
         outButt = findViewById(R.id.logoff);
 
         new Thread(()-> {
-            tracker = new Tracker("username", this);
+            tracker = new Tracker(username, this);
             runOnUiThread(()->pushButt.setText("You have " + tracker.getDeathsExerciseRemaining() + " push-ups remaining"));
 
         }).start();
