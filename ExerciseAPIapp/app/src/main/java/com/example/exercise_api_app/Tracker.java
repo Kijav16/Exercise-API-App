@@ -77,21 +77,21 @@ public class Tracker {
      * Reduces the amount of exercises to be done by the amount specified.
      */
     public void doDeathExercise(int amount){
-        setInitialDeaths(amount*getDeathMultiplier());
+        setInitialDeaths(getInitialDeaths()+amount*getDeathMultiplier());
     }
 
     /**
      * Reduces the amount of exercises to be done by the amount specified.
      */
     public void doKillsExercise(int amount){
-        setInitialKills(amount*getKillsMultiplier());
+        setInitialKills(getInitialKills()+amount*getKillsMultiplier());
     }
 
     /**
      * Reduces the amount of exercises to be done by the amount specified.
      */
     public void doHoursPlayedExercise(int amount){
-        setInitialHoursPlayed(amount*getHoursPlayedMultiplier());
+        setInitialHoursPlayed(getHoursPlayed()+amount*getHoursPlayedMultiplier());
     }
 
     /**
