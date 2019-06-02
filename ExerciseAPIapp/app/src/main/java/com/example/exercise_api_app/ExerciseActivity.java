@@ -27,7 +27,7 @@ public class ExerciseActivity extends AppCompatActivity {
     Tracker tracker;
 
     private Stack<Integer> stack = new Stack<Integer>();
-
+    private Timer trackerTimer;
 
 
     @Override
@@ -60,8 +60,8 @@ public class ExerciseActivity extends AppCompatActivity {
 
         }).start();
 
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        trackerTimer = new Timer();
+        trackerTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 tracker.calculateExerciseCount();
@@ -87,9 +87,15 @@ public class ExerciseActivity extends AppCompatActivity {
         outButt.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(ExerciseActivity.this, MainActivity.class);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent1);
+                trackerTimer.cancel();
+                new Thread(()->{
+                    tracker.logout();
+                    runOnUiThread(()->{
+                        Intent intent1 = new Intent(ExerciseActivity.this, MainActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent1);
+                    });
+                }).start();
             }
         });
     }

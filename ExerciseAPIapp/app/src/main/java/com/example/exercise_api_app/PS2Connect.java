@@ -118,9 +118,6 @@ public class PS2Connect implements StatConnect {
 
     @Override
     public void setup(String username) {
-        if (username.equalsIgnoreCase("ximiasfromcobalt")){
-            throw new Error("Wrong username");
-        }
         this.userID = findPlayerByName(username).optString("character_id");
     }
 }

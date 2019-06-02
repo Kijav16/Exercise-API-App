@@ -105,16 +105,11 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-
-                stats.setByString("Test", 2);
-                int test = stats.getByString("Test");
-                System.out.println(test);
-                runOnUiThread(() -> {
-                    Toast text = Toast.makeText(c, String.valueOf(test), Toast.LENGTH_LONG);
-                    text.show();
-                });
+                if (stats.getUserName() != null && !stats.getUserName().isEmpty()){
+                    nameSelected(stats.getUserName());
+                }
             }
-        }, 60);
+        }, 100);
     }
 
     AsyncTask<String, Void, List<String>> loader;

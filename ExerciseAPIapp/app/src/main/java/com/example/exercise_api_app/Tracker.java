@@ -41,6 +41,7 @@ public class Tracker {
         //apiConnect = new TestAPIConnect();
         apiConnect.setup(username);
         stats = new Stats(context);
+        stats.setUserName(username);
         //stats = new TestStats(context);
     }
 
@@ -160,5 +161,9 @@ public class Tracker {
 
     public void setKills(int kills) {
         stats.setKills(kills);
+    }
+
+    public void logout() {
+        stats.setUserName("");
     }
 }
