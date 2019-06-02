@@ -39,7 +39,7 @@ public class PS2Connect implements StatConnect{
     }
 
     public JSONObject getCharacterStatsById() throws JSONException {
-        return connection.establishConnectionAndQuery(CONTEXT_ROOT +"character/","?character_id="+userID+"&c:resolve=stat_by_faction").getJSONArray("character_list").getJSONObject(0);
+        return connection.establishConnectionAndQuery(CONTEXT_ROOT +"character/","?character_id="+userID+"&c:resolve=stat_history").getJSONArray("character_list").getJSONObject(0);
     }
 
     /**
@@ -56,7 +56,7 @@ public class PS2Connect implements StatConnect{
                 JSONArray playerList = players.getJSONArray("character_name_list");
                 LinkedList<String> result = new LinkedList<>();
                 for (int i = 0; i < playerList.length(); i++) {
-                    result.add(playerList.getString(i));
+                    result.add(playerList.getJSONObject(i).getJSONObject("name").getString("first"));
                 }
                 return result;
             } catch (JSONException e) {
@@ -75,7 +75,7 @@ public class PS2Connect implements StatConnect{
         try {
             JSONObject character = getCharacterStatsById();
             result.put("minutes_played", Integer.valueOf(character.getJSONObject("times").getString("minutes_played")));
-            JSONArray statArray = character.getJSONObject("stats").getJSONArray("stat_by_faction");
+            JSONArray statArray = character.getJSONObject("stats").getJSONArray("stat_history");
             for (int i = 0; i < statArray.length(); i++) {
                 JSONObject stat = statArray.getJSONObject(i);
                 if (result.containsKey(stat.getString("stat_name"))){
@@ -94,22 +94,25 @@ public class PS2Connect implements StatConnect{
 
     @Override
     public int getHoursPlayed() {
-        return statMap.get("minutes_played")/60;
-    }
+        updateStatsMap();
+        return statMap.get("time")/3600;
+    } //divided by minutes and hours
 
     @Override
     public int getDeaths() {
         updateStatsMap();
-        return statMap.get("killed_by");
+        return statMap.get("deaths");
     }
 
     @Override
     public int get(String query) {
+        updateStatsMap();
         return statMap.get(query);
     }
 
     @Override
     public int getKills() {
+        updateStatsMap();
         return statMap.get("kills");
     }
 
