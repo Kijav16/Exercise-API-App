@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class ExerciseActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
     private Stack<Integer> stack = new Stack<Integer>();
     private Timer trackerTimer;
+    private static final Executor worker = Executors.newFixedThreadPool(1);
 
 
     @Override
@@ -54,11 +57,11 @@ public class ExerciseActivity extends AppCompatActivity {
         setButt = findViewById(R.id.button4);
         outButt = findViewById(R.id.logoff);
 
-        new Thread(()-> {
+        worker.execute(()->{
             tracker = new Tracker(username, this);
             runOnUiThread(()->pushButt.setText("You have " + tracker.getDeathsExerciseRemaining() + " push-ups remaining"));
 
-        }).start();
+        });
 
         trackerTimer = new Timer();
         trackerTimer.scheduleAtFixedRate(new TimerTask() {
@@ -87,14 +90,14 @@ public class ExerciseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trackerTimer.cancel();
-                new Thread(()->{
+                worker.execute(()->{
                     tracker.logout();
                     runOnUiThread(()->{
                         Intent intent1 = new Intent(ExerciseActivity.this, MainActivity.class);
                         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent1);
                     });
-                }).start();
+                });
             }
         });
     }
