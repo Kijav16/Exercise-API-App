@@ -24,7 +24,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private Button pushButt;
     private Button sitButt;
     private Button squadButt;
-    private Button setButt;
+    private ImageButton setButt;
     private Button outButt;
     Tracker tracker;
 
@@ -37,9 +37,6 @@ public class ExerciseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Context c = this;
-        Stats stats = new Stats(c);
-
         setContentView(R.layout.activity_showex);
 
         Intent intent = getIntent();
@@ -49,17 +46,17 @@ public class ExerciseActivity extends AppCompatActivity {
         }
 
 
-
         //Assign the thingies from the variable
         pushButt = findViewById(R.id.button);
         sitButt = findViewById(R.id.button2);
         squadButt = findViewById(R.id.button3);
-        setButt = findViewById(R.id.button4);
+        setButt = findViewById(R.id.setbutt);
         outButt = findViewById(R.id.logoff);
 
         worker.execute(()->{
+            System.out.println("Init..");
             tracker = new Tracker(username, this);
-            runOnUiThread(()->pushButt.setText("You have " + tracker.getDeathsExerciseRemaining() + " push-ups remaining"));
+            updateButtonText();
 
         });
 
@@ -69,20 +66,44 @@ public class ExerciseActivity extends AppCompatActivity {
             public void run() {
                 updateButtonText();
             }
-        },2000,2000);
+        }, 2000, 2000);
 
 
-        Button.OnClickListener listener = new Button.OnClickListener() {
+        pushButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //tracker.doExercise();
-
+                worker.execute(()->{
+                    tracker.doDeathExercise(1);
+                    updateButtonText();
+                });
             }
-        };
+        });
+
+        sitButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                worker.execute(() -> {
+                    tracker.doKillsExercise(1);
+                    updateButtonText();
+                });
+            }
+        });
+
+        squadButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                worker.execute(() -> {
+                    tracker.doHoursPlayedExercise(1);
+                    updateButtonText();
+                });
+            }
+        });
+
+
         setButt.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ExerciseActivity.this, SettingActivity.class));
+                startActivity(new Intent(ExerciseActivity.this, SettingsActivity.class));
             }
         });
 
@@ -92,7 +113,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 trackerTimer.cancel();
                 worker.execute(()->{
                     tracker.logout();
-                    runOnUiThread(()->{
+                    runOnUiThread(() -> {
                         Intent intent1 = new Intent(ExerciseActivity.this, MainActivity.class);
                         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent1);
@@ -103,14 +124,16 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
 
-
     private void updateButtonText() {
-        runOnUiThread(()->{
-            pushButt.setText("You have " + String.valueOf(tracker.getDeathsExerciseRemaining()) + " push-ups remaining");
-        });
-    }
+        double deathsExerciseRemaining = tracker.getDeathsExerciseRemaining();
+        double killsExerciseRemaining = tracker.getKillsExerciseRemaining();
+        double hoursPlayedExerciseRemaining = tracker.getHoursPlayedExerciseRemaining();
+        runOnUiThread(() -> {
+            pushButt.setText("You have " + String.valueOf(deathsExerciseRemaining) + " push-ups remaining");
 
-    private void goBack(){
-    stack.pop();
+            sitButt.setText("You have " + String.valueOf(killsExerciseRemaining) + " sit-ups remaining");
+
+            squadButt.setText("You have " + String.valueOf(hoursPlayedExerciseRemaining) + " push-ups remaining");
+        });
     }
 }
