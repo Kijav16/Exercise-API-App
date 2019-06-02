@@ -23,59 +23,114 @@ public class Tracker {
      */
     public Tracker(String username, Context context) {
         apiConnect = new PS2Connect();
-        //apiConnect = new TestAPIConnect();
         apiConnect.setup(username);
         stats = new Stats(context);
         if (stats.getUserName()== null || !stats.getUserName().equals(username)){
             stats.setUserName(username);
             reloadInitialStats();
         }
-        //stats = new TestStats(context);
     }
 
+    /**
+     * Reloads the initial stats, effectively setting them to 0.
+     */
     private void reloadInitialStats() {
         setInitialDeaths(getDeaths());
         setInitialKills(getKills());
         setInitialHoursPlayed(getHoursPlayed());
     }
 
+    /**
+     * Getter for the kills exercises remaining.
+     */
     public double getKillsExerciseRemaining() {
-        return (int)((getKills() - getInitialKills()) * getKillsMultiplier());
+        if (getKillsMultiplier()==0){
+            setInitialKills(getKills());
+            return 0;
+        }
+        return (getKills() - getInitialKills()) * getKillsMultiplier();
     }
 
+    /**
+     * Getter for the remaining death exercises.
+     */
     public double getDeathsExerciseRemaining() {
+        if (getDeathMultiplier()==0){
+            setInitialDeaths(getDeaths());
+            return 0;
+        }
         return (getDeaths() - getInitialDeaths()) * getDeathMultiplier();
     }
 
+    /**
+     * Getter for the remaining hours played exercises.
+     */
     public double getHoursPlayedExerciseRemaining() {
+        if (getHoursPlayedMultiplier()==0){
+            setInitialHoursPlayed(getHoursPlayed());
+            return 0;
+        }
         return (getHoursPlayed() - getInitialHoursPlayed()) * getHoursPlayedMultiplier();
     }
 
+    /**
+     * Reduces the amount of exercises to be done by the amount specified.
+     */
     public void doDeathExercise(int amount){
         setInitialDeaths(amount*getDeathMultiplier());
     }
+
+    /**
+     * Reduces the amount of exercises to be done by the amount specified.
+     */
     public void doKillsExercise(int amount){
         setInitialKills(amount*getKillsMultiplier());
     }
 
+    /**
+     * Reduces the amount of exercises to be done by the amount specified.
+     */
     public void doHoursPlayedExercise(int amount){
         setInitialHoursPlayed(amount*getHoursPlayedMultiplier());
     }
 
+    /**
+     * Setter for the kills multiplier.
+     * Setting the multiplier to 0 will disable tracking for the stat.
+     */
     public void setKillsMultiplier(int multiplier){
         stats.setKillsMultiplier(multiplier);
     }
-
+    /**
+     * Setter for the deaths multiplier.
+     * Setting the multiplier to 0 will disable tracking for the stat.
+     */
     public void setDeathsMultiplier(int multiplier) {
         stats.setDeathMultiplier(multiplier);
     }
 
+    /**
+     * Setter for the hours played multiplier.
+     * Setting the multiplier to 0 will disable tracking for the stat.
+     */
     public void setHoursPlayedMultiplier(int multiplier) {
         stats.setHoursPlayedMultiplier(multiplier);
     }
 
+    /**
+     * Performs a logout, resetting the user.
+     */
     public void logout() {
         stats.setUserName("");
+    }
+
+    /**
+     * Reset all multipliers to default values.
+     */
+    public void resetMultipliers(){
+        setKillsMultiplier(1);
+        setDeathsMultiplier(1);
+        setHoursPlayedMultiplier(1);
     }
 
     private int getDeaths() {

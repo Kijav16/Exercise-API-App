@@ -83,4 +83,3 @@ public class Stats {
         Persistance.getPersistance(c).daoAccess().setString(sm);
     }
 }
-
