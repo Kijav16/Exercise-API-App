@@ -12,9 +12,11 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     StatConnect sc = new PS2Connect();
     AutoCompleteTextView autoCompleteTextView;
     Persistance persistance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,17 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_dropdown_item_1line);
         autoCompleteTextView.setThreshold(4);
         autoCompleteTextView.setAdapter(adapter);
-        autoCompleteTextView.setOnItemClickListener(
-                new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        nameSelected(autoCompleteTextView.getText().toString().toLowerCase());
 
-
-                    }
-                });
-
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                nameSelected(autoCompleteTextView.getText().toString().toLowerCase());
+            }
+        });
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == TRIGGER_AUTO_COMPLETE) {
-                    if ((autoCompleteTextView.getText().length()>3)) {
+                    if ((autoCompleteTextView.getText().length() > 3)) {
 
                         loadSuggestions(autoCompleteTextView.getText().toString());
                     }
@@ -110,15 +109,16 @@ public class MainActivity extends AppCompatActivity {
                 stats.setByString("Test", 2);
                 int test = stats.getByString("Test");
                 System.out.println(test);
-                runOnUiThread(()-> {
-                    Toast text = Toast.makeText(c, String.valueOf(test),Toast.LENGTH_LONG);
+                runOnUiThread(() -> {
+                    Toast text = Toast.makeText(c, String.valueOf(test), Toast.LENGTH_LONG);
                     text.show();
                 });
             }
-        },60);
+        }, 60);
     }
 
     AsyncTask<String, Void, List<String>> loader;
+
     private void loadSuggestions(String prefix) {
         if (loader != null) {
             loader.cancel(true);
@@ -143,18 +143,18 @@ public class MainActivity extends AppCompatActivity {
 
         PeriodicWorkRequest br = new PeriodicWorkRequest.Builder(Botherer.class, 10, TimeUnit.HOURS).build();
 
-        WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE ,br);
+        WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE, br);
         //Toast.makeText(this, "Bother activated!", Toast.LENGTH_LONG).show();
         // Disabled bothering.
         WorkManager.getInstance().cancelUniqueWork("EBother");
     }
 
-private void nameSelected(String username){
-    Intent intent = new Intent(this, ExerciseActivity.class);
-    Resources resources = getResources();
-    String key = "username";
-    intent.putExtra(key, username);
-    startActivity(intent);
+    private void nameSelected(String username) {
+        Intent intent = new Intent(this, ExerciseActivity.class);
+        Resources resources = getResources();
+        String key = "username";
+        intent.putExtra(key, username);
+        startActivity(intent);
 
-}
+    }
 }

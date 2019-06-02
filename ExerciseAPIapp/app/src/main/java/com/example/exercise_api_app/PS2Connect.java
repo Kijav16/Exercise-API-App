@@ -30,7 +30,7 @@ public class PS2Connect implements StatConnect {
      */
     public JSONObject findPlayerByName(String namePrefix) {
         try {
-            JSONObject players = connection.establishConnectionAndQuery(CONTEXT_ROOT + "character_name/", "?name.first_lower=^" + namePrefix.toLowerCase() + "&c:limit=10");
+            JSONObject players = connection.establishConnectionAndQuery(CONTEXT_ROOT + "character_name/", "?name.first_lower=" + namePrefix.toLowerCase() + "&c:limit=10");
             return connection.establishConnectionAndQuery(CONTEXT_ROOT + "character", "/?character_id=" + players.getJSONArray("character_name_list").getJSONObject(0).getString("character_id")).getJSONArray("character_list").getJSONObject(0);
         } catch (JSONException e) {
             Log.e(this.getClass().getName() + " FindPlayerByName", "Missing jsonArray from response.");
@@ -118,6 +118,9 @@ public class PS2Connect implements StatConnect {
 
     @Override
     public void setup(String username) {
+        if (username.equalsIgnoreCase("ximiasfromcobalt")){
+            throw new Error("Wrong username");
+        }
         this.userID = findPlayerByName(username).optString("character_id");
     }
 }
