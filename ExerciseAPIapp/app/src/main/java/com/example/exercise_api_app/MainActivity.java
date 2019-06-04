@@ -2,9 +2,12 @@ package com.example.exercise_api_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +15,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -112,11 +116,6 @@ public class MainActivity extends AppCompatActivity {
         }, 100);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        activateBothering();
-    }
 
     AsyncTask<String, Void, List<String>> loader;
 
@@ -143,11 +142,6 @@ public class MainActivity extends AppCompatActivity {
     protected void deactivateBothering(){
         WorkManager.getInstance().cancelUniqueWork("EBother");
 
-    }
-
-    protected void activateBothering() {
-        PeriodicWorkRequest br = new PeriodicWorkRequest.Builder(Botherer.class, 5, TimeUnit.HOURS).build();
-        WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE, br);
     }
 
     private void nameSelected(String username) {

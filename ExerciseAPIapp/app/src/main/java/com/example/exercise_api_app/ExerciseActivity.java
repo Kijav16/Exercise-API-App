@@ -1,20 +1,24 @@
 package com.example.exercise_api_app;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ExerciseActivity extends AppCompatActivity {
 
@@ -138,5 +142,23 @@ public class ExerciseActivity extends AppCompatActivity {
 
             squadButt.setText("You have " + String.valueOf(hoursPlayedExerciseRemaining) + " push-ups remaining");
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WorkManager.getInstance().cancelUniqueWork("EBother");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        activateBothering();
+    }
+
+    protected void activateBothering() {
+        Log.i(getClass().getName(), "Activating Botherer!");
+        PeriodicWorkRequest br = new PeriodicWorkRequest.Builder(Botherer.class, 15, TimeUnit.MINUTES).build();
+        WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE, br);
     }
 }
