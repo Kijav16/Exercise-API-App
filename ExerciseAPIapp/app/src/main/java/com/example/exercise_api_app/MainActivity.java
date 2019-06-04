@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        activateBothering();
+        deactivateBothering();
         Context c = this;
         Stats stats = new Stats(c);
         Timer timer = new Timer();
@@ -110,6 +110,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, 100);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activateBothering();
     }
 
     AsyncTask<String, Void, List<String>> loader;
@@ -134,14 +140,14 @@ public class MainActivity extends AppCompatActivity {
         }.execute(prefix);
     }
 
-    protected void activateBothering() {
-
-        PeriodicWorkRequest br = new PeriodicWorkRequest.Builder(Botherer.class, 10, TimeUnit.HOURS).build();
-
-        WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE, br);
-        //Toast.makeText(this, "Bother activated!", Toast.LENGTH_LONG).show();
-        // Disabled bothering.
+    protected void deactivateBothering(){
         WorkManager.getInstance().cancelUniqueWork("EBother");
+
+    }
+
+    protected void activateBothering() {
+        PeriodicWorkRequest br = new PeriodicWorkRequest.Builder(Botherer.class, 5, TimeUnit.HOURS).build();
+        WorkManager.getInstance().enqueueUniquePeriodicWork("EBother", ExistingPeriodicWorkPolicy.REPLACE, br);
     }
 
     private void nameSelected(String username) {

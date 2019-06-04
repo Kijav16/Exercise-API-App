@@ -125,6 +125,9 @@ public class ExerciseActivity extends AppCompatActivity {
 
 
     private void updateButtonText() {
+        if (tracker == null) {
+            return;
+        }
         double deathsExerciseRemaining = tracker.getDeathsExerciseRemaining();
         double killsExerciseRemaining = tracker.getKillsExerciseRemaining();
         double hoursPlayedExerciseRemaining = tracker.getHoursPlayedExerciseRemaining();

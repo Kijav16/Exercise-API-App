@@ -21,10 +21,12 @@ public class Botherer extends Worker {
     public static final String CHANNEL_ID = "bother";
     public int exercisesToBother = 5;
     public Context context;
+    private Stats stats;
 
     public Botherer(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
+        stats = new Stats(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Botherer", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("Used for reminders of old exercises");
@@ -36,9 +38,9 @@ public class Botherer extends Worker {
     /**
      * Sends a push notification to the user.
      */
-    public void bother(Context context){
+    public void bother(Context context, int remainingExercices){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setContentTitle("Remaining exercises: "+getRemainingExercises())
+                .setContentTitle("Remaining exercises: "+remainingExercices)
                 .setContentText("You still have remaining exercises.")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -48,20 +50,23 @@ public class Botherer extends Worker {
         // notificationId is a unique int for each notification that you must define
         int notificationId = 42;
         notificationManager.notify(notificationId, builder.build());
-        Toast.makeText(context, "Bother", Toast.LENGTH_LONG).show();
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        int remainingExercises = getRemainingExercises();
-        if (remainingExercises >= exercisesToBother){
-            bother(context);
+
+        if (stats.getUserName() != null && !stats.getUserName().isEmpty()){
+            Tracker tracker = new Tracker(stats.getUserName(), context);
+            int remainingExercises = getRemainingExercises(tracker);
+            if (remainingExercises >= exercisesToBother){
+                bother(context, remainingExercises);
+            }
         }
         return Result.success();
     }
 
-    private int getRemainingExercises() {
-        return 7;
+    private int getRemainingExercises(Tracker tracker) {
+        return (int) (tracker.getDeathsExerciseRemaining()+ tracker.getKillsExerciseRemaining() + tracker.getHoursPlayedExerciseRemaining());
     }
 }
